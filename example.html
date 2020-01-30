@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Multilingual text selection</title>
+		
+		<style type="text/css">
+			* {
+				padding : 0;
+				margin : 0;
+			}
+			
+			#container {
+				width : 100%;
+			}
+			
+			#base-lang, #target-lang {
+				width : 40%;
+				float : left;
+				border : 1px solid lightgray;
+				margin : 1%;
+				padding : 2%;
+			}
+			
+			.text span {
+				display:inline-block;
+			}
+			
+			.text:not(:last-child) {
+				margin-bottom : 1em;
+			}
+			
+			.text span::-moz-selection, .text::-moz-selection {
+				background : lightgreen;
+			}
+			
+			.text span::selection, .text::selection {
+				background : lightgreen;
+			}
+			
+			.text.select-done span::-moz-selection, .text.select-done::-moz-selection {
+				background : transparent;
+			}
+			
+			.text.select-done span::selection, .text.select-done::selection {
+				background : transparent;
+			}
+			
+			.selected {
+				position : relative;
+			}
+			
+			.selected::before {
+				background : lightgreen;
+				border-radius : 5px;
+				z-index : -2;
+				content : "";
+				position : absolute;
+				left: -5px;
+				right: -5px;
+				bottom: -5px;
+				top : -2px;
+			}
+			
+			.preselected {
+				position : relative;
+			}
+			
+			.preselected::before {
+				background : lightblue;
+				border-radius : 5px;
+				z-index : -1;
+				content : "";
+				position : absolute;
+				left: -5px;
+				right: -5px;
+				bottom: -5px;
+				top : -2px;
+			}
+		</style>
+		
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div id="container">
+			<div id="base-lang">
+			<p class="text base-text"><span data-targets='{"base":[0],"target":[0,1]}'>Gallia</span> <span data-targets='{"base":[1],"target":[5]}'>est</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>omnis</span> <span data-targets='{"base":[3],"target":[6]}'>divisa</span> <span data-targets='{"base":[4],"target":[7]}'>in</span> <span data-targets='{"base":[5],"target":[9]}'>partes</span> <span data-targets='{"base":[6],"target":[8]}'>tres,</span> <span data-targets='{"base":[7],"target":[10]}'>quarum</span> <span data-targets='{"base":[8],"target":[11]}'>unam</span> <span data-targets='{"base":[9],"target":[12,13]}'>incolunt</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>Belgae,</span> <span data-targets='{"base":[11],"target":[17]}'>aliam</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>Aquitani,</span> <span data-targets='{"base":[13],"target":[21,22]}'>tertiam</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>qui</span> <span data-targets='{"base":[15],"target":[26,27]}'>ipsorum</span> <span data-targets='{"base":[16],"target":[28]}'>lingua</span> <span data-targets='{"base":[17],"target":[31]}'>Celtae,</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>nostra</span> <span data-targets='{"base":[19],"target":[35]}'>Galli</span> <span data-targets='{"base":[20],"target":[29,30]}'>appellantur.</span> <span data-targets='{"base":[22,21],"target":[36]}'>Hi</span> <span data-targets='{"base":[22,21],"target":[36]}'>omnes</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>lingua,</span> <span data-targets='{"base":[24],"target":[43,44]}'>institutis,</span> <span data-targets='{"base":[25],"target":[45,46]}'>legibus</span> <span data-targets='{"base":[26],"target":[38]}'>inter</span> <span data-targets='{"base":[27],"target":[39]}'>se</span> <span data-targets='{"base":[28],"target":[37]}'>differunt.</span> <span data-targets='{"base":[29],"target":[47,48]}'>Gallos</span> <span data-targets='{"base":[30],"target":[51]}'>ab</span> <span data-targets='{"base":[31],"target":[52]}'>Aquitanis</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>Garumna</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>flumen,</span> <span data-targets='{"base":[34],"target":[56]}'>a</span> <span data-targets='{"base":[35],"target":[57]}'>Belgis</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>Matrona</span> <span data-targets='{"base":[37],"target":[61]}'>et</span> <span data-targets='{"base":[38],"target":[62,63]}'>Sequana</span> <span data-targets='{"base":[39],"target":[49,50]}'>dividit.</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>Horum</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>omnium</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>fortissimi</span> <span data-targets='{"base":[43],"target":[71]}'>sunt</span> <span data-targets='{"base":[44],"target":[72,73]}'>Belgae,</span> <span data-targets='{"base":[45],"target":[74]}'>propterea</span> <span data-targets='{"base":[46],"target":[80]}'>quod</span> <span data-targets='{"base":[47],"target":[81]}'>a</span> <span data-targets='{"base":[48],"target":[82]}'>cultu</span> <span data-targets='{"base":[49],"target":[83]}'>atque</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>humanitate</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>provinciae</span> <span data-targets='{"base":[52],"target":[77,78,79]}'>longissime</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>absunt,</span> <span data-targets='{"base":[54],"target":[90,91]}'>minimeque</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>ad</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>eos</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>mercatores</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>saepe</span> <span data-targets='{"base":[59],"target":[94]}'>commeant</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>atque</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>ea</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>quae</span> <span data-targets='{"base":[63],"target":[107]}'>ad</span> <span data-targets='{"base":[64],"target":[108]}'>effeminandos</span> <span data-targets='{"base":[65],"target":[109,110]}'>animos</span> <span data-targets='{"base":[66],"target":[106]}'>pertinent</span> <span data-targets='{"base":[67],"target":[101]}'>important,</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>proximique</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>sunt</span> <span data-targets='{"base":[70],"target":[117,118]}'>Germanis,</span> <span data-targets='{"base":[71],"target":[119]}'>qui</span> <span data-targets='{"base":[72],"target":[121]}'>trans</span> <span data-targets='{"base":[73],"target":[122,123]}'>Rhenum</span> <span data-targets='{"base":[74],"target":[120]}'>incolunt,</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>quibuscum</span> <span data-targets='{"base":[76],"target":[129]}'>continenter</span> <span data-targets='{"base":[77],"target":[130,131]}'>bellum</span> <span data-targets='{"base":[78],"target":[127,128]}'>gerunt.</span> </p>
+			
+						<p class="text base-text"><span data-targets='{"base":[0],"target":[0,1]}'>Gallia</span> <span data-targets='{"base":[1],"target":[5]}'>est</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>omnis</span> <span data-targets='{"base":[3],"target":[6]}'>divisa</span> <span data-targets='{"base":[4],"target":[7]}'>in</span> <span data-targets='{"base":[5],"target":[9]}'>partes</span> <span data-targets='{"base":[6],"target":[8]}'>tres,</span> <span data-targets='{"base":[7],"target":[10]}'>quarum</span> <span data-targets='{"base":[8],"target":[11]}'>unam</span> <span data-targets='{"base":[9],"target":[12,13]}'>incolunt</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>Belgae,</span> <span data-targets='{"base":[11],"target":[17]}'>aliam</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>Aquitani,</span> <span data-targets='{"base":[13],"target":[21,22]}'>tertiam</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>qui</span> <span data-targets='{"base":[15],"target":[26,27]}'>ipsorum</span> <span data-targets='{"base":[16],"target":[28]}'>lingua</span> <span data-targets='{"base":[17],"target":[31]}'>Celtae,</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>nostra</span> <span data-targets='{"base":[19],"target":[35]}'>Galli</span> <span data-targets='{"base":[20],"target":[29,30]}'>appellantur.</span> <span data-targets='{"base":[22,21],"target":[36]}'>Hi</span> <span data-targets='{"base":[22,21],"target":[36]}'>omnes</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>lingua,</span> <span data-targets='{"base":[24],"target":[43,44]}'>institutis,</span> <span data-targets='{"base":[25],"target":[45,46]}'>legibus</span> <span data-targets='{"base":[26],"target":[38]}'>inter</span> <span data-targets='{"base":[27],"target":[39]}'>se</span> <span data-targets='{"base":[28],"target":[37]}'>differunt.</span> <span data-targets='{"base":[29],"target":[47,48]}'>Gallos</span> <span data-targets='{"base":[30],"target":[51]}'>ab</span> <span data-targets='{"base":[31],"target":[52]}'>Aquitanis</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>Garumna</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>flumen,</span> <span data-targets='{"base":[34],"target":[56]}'>a</span> <span data-targets='{"base":[35],"target":[57]}'>Belgis</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>Matrona</span> <span data-targets='{"base":[37],"target":[61]}'>et</span> <span data-targets='{"base":[38],"target":[62,63]}'>Sequana</span> <span data-targets='{"base":[39],"target":[49,50]}'>dividit.</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>Horum</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>omnium</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>fortissimi</span> <span data-targets='{"base":[43],"target":[71]}'>sunt</span> <span data-targets='{"base":[44],"target":[72,73]}'>Belgae,</span> <span data-targets='{"base":[45],"target":[74]}'>propterea</span> <span data-targets='{"base":[46],"target":[80]}'>quod</span> <span data-targets='{"base":[47],"target":[81]}'>a</span> <span data-targets='{"base":[48],"target":[82]}'>cultu</span> <span data-targets='{"base":[49],"target":[83]}'>atque</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>humanitate</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>provinciae</span> <span data-targets='{"base":[52],"target":[77,78,79]}'>longissime</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>absunt,</span> <span data-targets='{"base":[54],"target":[90,91]}'>minimeque</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>ad</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>eos</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>mercatores</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>saepe</span> <span data-targets='{"base":[59],"target":[94]}'>commeant</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>atque</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>ea</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>quae</span> <span data-targets='{"base":[63],"target":[107]}'>ad</span> <span data-targets='{"base":[64],"target":[108]}'>effeminandos</span> <span data-targets='{"base":[65],"target":[109,110]}'>animos</span> <span data-targets='{"base":[66],"target":[106]}'>pertinent</span> <span data-targets='{"base":[67],"target":[101]}'>important,</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>proximique</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>sunt</span> <span data-targets='{"base":[70],"target":[117,118]}'>Germanis,</span> <span data-targets='{"base":[71],"target":[119]}'>qui</span> <span data-targets='{"base":[72],"target":[121]}'>trans</span> <span data-targets='{"base":[73],"target":[122,123]}'>Rhenum</span> <span data-targets='{"base":[74],"target":[120]}'>incolunt,</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>quibuscum</span> <span data-targets='{"base":[76],"target":[129]}'>continenter</span> <span data-targets='{"base":[77],"target":[130,131]}'>bellum</span> <span data-targets='{"base":[78],"target":[127,128]}'>gerunt.</span> </p>
+		</div>
+		
+		<div id="target-lang">
+			<p class="text target-text"><span data-targets='{"base":[0],"target":[0,1]}'>La</span> <span data-targets='{"base":[0],"target":[0,1]}'>Gaule,</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>dans</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>son</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>ensemble,</span> <span data-targets='{"base":[1],"target":[5]}'>est</span> <span data-targets='{"base":[3],"target":[6]}'>divisée</span> <span data-targets='{"base":[4],"target":[7]}'>en</span> <span data-targets='{"base":[6],"target":[8]}'>trois</span> <span data-targets='{"base":[5],"target":[9]}'>parties,</span> <span data-targets='{"base":[7],"target":[10]}'>dont</span> <span data-targets='{"base":[8],"target":[11]}'>l'une</span> <span data-targets='{"base":[9],"target":[12,13]}'>est</span> <span data-targets='{"base":[9],"target":[12,13]}'>habitée</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>par</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>les</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>Belges,</span> <span data-targets='{"base":[11],"target":[17]}'>l'autre</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>par</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>les</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>Aquitains,</span> <span data-targets='{"base":[13],"target":[21,22]}'>la</span> <span data-targets='{"base":[13],"target":[21,22]}'>troisième</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>par</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>ceux</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>qui</span> <span data-targets='{"base":[15],"target":[26,27]}'>dans</span> <span data-targets='{"base":[15],"target":[26,27]}'>leur</span> <span data-targets='{"base":[16],"target":[28]}'>langue</span> <span data-targets='{"base":[20],"target":[29,30]}'>se</span> <span data-targets='{"base":[20],"target":[29,30]}'>nomment</span> <span data-targets='{"base":[17],"target":[31]}'>Celtes,</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>dans</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>la</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>nôtre,</span> <span data-targets='{"base":[19],"target":[35]}'>Gaulois.</span> <span data-targets='{"base":[22,21],"target":[36]}'>Tous</span> <span data-targets='{"base":[28],"target":[37]}'>diffèrent</span> <span data-targets='{"base":[26],"target":[38]}'>entre</span> <span data-targets='{"base":[27],"target":[39]}'>eux</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>par</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>la</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>langue,</span> <span data-targets='{"base":[24],"target":[43,44]}'>les</span> <span data-targets='{"base":[24],"target":[43,44]}'>coutumes,</span> <span data-targets='{"base":[25],"target":[45,46]}'>les</span> <span data-targets='{"base":[25],"target":[45,46]}'>lois.</span> <span data-targets='{"base":[29],"target":[47,48]}'>Les</span> <span data-targets='{"base":[29],"target":[47,48]}'>Gaulois</span> <span data-targets='{"base":[39],"target":[49,50]}'>sont</span> <span data-targets='{"base":[39],"target":[49,50]}'>séparés</span> <span data-targets='{"base":[30],"target":[51]}'>des</span> <span data-targets='{"base":[31],"target":[52]}'>Aquitains</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>par</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>la</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>Garonne,</span> <span data-targets='{"base":[34],"target":[56]}'>des</span> <span data-targets='{"base":[35],"target":[57]}'>Belges</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>par</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>la</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>Marne</span> <span data-targets='{"base":[37],"target":[61]}'>et</span> <span data-targets='{"base":[38],"target":[62,63]}'>la</span> <span data-targets='{"base":[38],"target":[62,63]}'>Seine.</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>Les</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>plus</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>braves</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>de</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>tous</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>ces</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>peuples</span> <span data-targets='{"base":[43],"target":[71]}'>sont</span> <span data-targets='{"base":[44],"target":[72,73]}'>les</span> <span data-targets='{"base":[44],"target":[72,73]}'>Belges,</span> <span data-targets='{"base":[45],"target":[74]}'>parce</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>qu'ils</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>sont</span> <span data-targets='{"base":[52],"target":[77,78,79]}'>les</span> <span data-targets='{"base":[52],"target":[77,78,79]}'>plus</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>éloignés</span> <span data-targets='{"base":[46],"target":[80]}'>de</span> <span data-targets='{"base":[47],"target":[81]}'>la</span> <span data-targets='{"base":[48],"target":[82]}'>civilisation</span> <span data-targets='{"base":[49],"target":[83]}'>et</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>des</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>mœurs</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>raffinés</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>de</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>la</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>Province,</span> <span data-targets='{"base":[54],"target":[90,91]}'>parce</span> <span data-targets='{"base":[54],"target":[90,91]}'>que</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>les</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>marchands</span> <span data-targets='{"base":[59],"target":[94]}'>vont</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>très</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>rarement</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>chez</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>eux</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>et</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>n'y</span> <span data-targets='{"base":[67],"target":[101]}'>importent</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>pas</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>ce</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>qui</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>est</span> <span data-targets='{"base":[66],"target":[106]}'>propre</span> <span data-targets='{"base":[63],"target":[107]}'>à</span> <span data-targets='{"base":[64],"target":[108]}'>amollir</span> <span data-targets='{"base":[65],"target":[109,110]}'>les</span> <span data-targets='{"base":[65],"target":[109,110]}'>cœurs,</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>parce</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>qu'ils</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>sont</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>les</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>plus</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>voisins</span> <span data-targets='{"base":[70],"target":[117,118]}'>des</span> <span data-targets='{"base":[70],"target":[117,118]}'>Germains</span> <span data-targets='{"base":[71],"target":[119]}'>qui</span> <span data-targets='{"base":[74],"target":[120]}'>habitent</span> <span data-targets='{"base":[72],"target":[121]}'>au-delà</span> <span data-targets='{"base":[73],"target":[122,123]}'>du</span> <span data-targets='{"base":[73],"target":[122,123]}'>Rhin</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>et</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>avec</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>qui</span> <span data-targets='{"base":[78],"target":[127,128]}'>ils</span> <span data-targets='{"base":[78],"target":[127,128]}'>sont</span> <span data-targets='{"base":[76],"target":[129]}'>continuellement</span> <span data-targets='{"base":[77],"target":[130,131]}'>en</span> <span data-targets='{"base":[77],"target":[130,131]}'>guerre.</span> </p>
+			
+			<p class="text target-text"><span data-targets='{"base":[0],"target":[0,1]}'>La</span> <span data-targets='{"base":[0],"target":[0,1]}'>Gaule,</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>dans</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>son</span> <span data-targets='{"base":[2],"target":[2,3,4]}'>ensemble,</span> <span data-targets='{"base":[1],"target":[5]}'>est</span> <span data-targets='{"base":[3],"target":[6]}'>divisée</span> <span data-targets='{"base":[4],"target":[7]}'>en</span> <span data-targets='{"base":[6],"target":[8]}'>trois</span> <span data-targets='{"base":[5],"target":[9]}'>parties,</span> <span data-targets='{"base":[7],"target":[10]}'>dont</span> <span data-targets='{"base":[8],"target":[11]}'>l'une</span> <span data-targets='{"base":[9],"target":[12,13]}'>est</span> <span data-targets='{"base":[9],"target":[12,13]}'>habitée</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>par</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>les</span> <span data-targets='{"base":[10],"target":[14,15,16]}'>Belges,</span> <span data-targets='{"base":[11],"target":[17]}'>l'autre</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>par</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>les</span> <span data-targets='{"base":[12],"target":[18,19,20]}'>Aquitains,</span> <span data-targets='{"base":[13],"target":[21,22]}'>la</span> <span data-targets='{"base":[13],"target":[21,22]}'>troisième</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>par</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>ceux</span> <span data-targets='{"base":[14],"target":[23,24,25]}'>qui</span> <span data-targets='{"base":[15],"target":[26,27]}'>dans</span> <span data-targets='{"base":[15],"target":[26,27]}'>leur</span> <span data-targets='{"base":[16],"target":[28]}'>langue</span> <span data-targets='{"base":[20],"target":[29,30]}'>se</span> <span data-targets='{"base":[20],"target":[29,30]}'>nomment</span> <span data-targets='{"base":[17],"target":[31]}'>Celtes,</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>dans</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>la</span> <span data-targets='{"base":[18],"target":[32,33,34]}'>nôtre,</span> <span data-targets='{"base":[19],"target":[35]}'>Gaulois.</span> <span data-targets='{"base":[22,21],"target":[36]}'>Tous</span> <span data-targets='{"base":[28],"target":[37]}'>diffèrent</span> <span data-targets='{"base":[26],"target":[38]}'>entre</span> <span data-targets='{"base":[27],"target":[39]}'>eux</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>par</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>la</span> <span data-targets='{"base":[23],"target":[40,41,42]}'>langue,</span> <span data-targets='{"base":[24],"target":[43,44]}'>les</span> <span data-targets='{"base":[24],"target":[43,44]}'>coutumes,</span> <span data-targets='{"base":[25],"target":[45,46]}'>les</span> <span data-targets='{"base":[25],"target":[45,46]}'>lois.</span> <span data-targets='{"base":[29],"target":[47,48]}'>Les</span> <span data-targets='{"base":[29],"target":[47,48]}'>Gaulois</span> <span data-targets='{"base":[39],"target":[49,50]}'>sont</span> <span data-targets='{"base":[39],"target":[49,50]}'>séparés</span> <span data-targets='{"base":[30],"target":[51]}'>des</span> <span data-targets='{"base":[31],"target":[52]}'>Aquitains</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>par</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>la</span> <span data-targets='{"base":[33,32],"target":[53,54,55]}'>Garonne,</span> <span data-targets='{"base":[34],"target":[56]}'>des</span> <span data-targets='{"base":[35],"target":[57]}'>Belges</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>par</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>la</span> <span data-targets='{"base":[36],"target":[58,59,60]}'>Marne</span> <span data-targets='{"base":[37],"target":[61]}'>et</span> <span data-targets='{"base":[38],"target":[62,63]}'>la</span> <span data-targets='{"base":[38],"target":[62,63]}'>Seine.</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>Les</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>plus</span> <span data-targets='{"base":[42],"target":[64,65,66]}'>braves</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>de</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>tous</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>ces</span> <span data-targets='{"base":[41,40],"target":[67,68,69,70]}'>peuples</span> <span data-targets='{"base":[43],"target":[71]}'>sont</span> <span data-targets='{"base":[44],"target":[72,73]}'>les</span> <span data-targets='{"base":[44],"target":[72,73]}'>Belges,</span> <span data-targets='{"base":[45],"target":[74]}'>parce</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>qu'ils</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>sont</span> <span data-targets='{"base":[52],"target":[77,78,79]}'>les</span> <span data-targets='{"base":[52],"target":[77,78,79]}'>plus</span> <span data-targets='{"base":[53],"target":[75,76,79]}'>éloignés</span> <span data-targets='{"base":[46],"target":[80]}'>de</span> <span data-targets='{"base":[47],"target":[81]}'>la</span> <span data-targets='{"base":[48],"target":[82]}'>civilisation</span> <span data-targets='{"base":[49],"target":[83]}'>et</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>des</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>mœurs</span> <span data-targets='{"base":[50],"target":[84,85,86]}'>raffinés</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>de</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>la</span> <span data-targets='{"base":[51],"target":[87,88,89]}'>Province,</span> <span data-targets='{"base":[54],"target":[90,91]}'>parce</span> <span data-targets='{"base":[54],"target":[90,91]}'>que</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>les</span> <span data-targets='{"base":[56,57,55],"target":[92,93]}'>marchands</span> <span data-targets='{"base":[59],"target":[94]}'>vont</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>très</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>rarement</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>chez</span> <span data-targets='{"base":[58],"target":[95,96,97,98]}'>eux</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>et</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>n'y</span> <span data-targets='{"base":[67],"target":[101]}'>importent</span> <span data-targets='{"base":[60],"target":[99,100,102]}'>pas</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>ce</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>qui</span> <span data-targets='{"base":[62,61],"target":[103,104,105,106]}'>est</span> <span data-targets='{"base":[66],"target":[106]}'>propre</span> <span data-targets='{"base":[63],"target":[107]}'>à</span> <span data-targets='{"base":[64],"target":[108]}'>amollir</span> <span data-targets='{"base":[65],"target":[109,110]}'>les</span> <span data-targets='{"base":[65],"target":[109,110]}'>cœurs,</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>parce</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>qu'ils</span> <span data-targets='{"base":[69],"target":[111,112,113]}'>sont</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>les</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>plus</span> <span data-targets='{"base":[68],"target":[114,115,116]}'>voisins</span> <span data-targets='{"base":[70],"target":[117,118]}'>des</span> <span data-targets='{"base":[70],"target":[117,118]}'>Germains</span> <span data-targets='{"base":[71],"target":[119]}'>qui</span> <span data-targets='{"base":[74],"target":[120]}'>habitent</span> <span data-targets='{"base":[72],"target":[121]}'>au-delà</span> <span data-targets='{"base":[73],"target":[122,123]}'>du</span> <span data-targets='{"base":[73],"target":[122,123]}'>Rhin</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>et</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>avec</span> <span data-targets='{"base":[75],"target":[124,125,126]}'>qui</span> <span data-targets='{"base":[78],"target":[127,128]}'>ils</span> <span data-targets='{"base":[78],"target":[127,128]}'>sont</span> <span data-targets='{"base":[76],"target":[129]}'>continuellement</span> <span data-targets='{"base":[77],"target":[130,131]}'>en</span> <span data-targets='{"base":[77],"target":[130,131]}'>guerre.</span> </p>
+		</div>
+		</div>
+		
+		<script type="text/javascript">
+			(function($) {
+			    $.fn.isAfter = function(sel){
+			        return this.prevAll().filter(sel).length !== 0;
+			    };
+
+			    $.fn.isBefore= function(sel){
+			        return this.nextAll().filter(sel).length !== 0;
+			    };
+			})(jQuery);
+
+			$(document).ready(function() {
+				var langs = {
+					"en" : true,
+					"fr" : true,
+					"br" : true
+				}
+				
+				var isSelecting = false;
+				var container;
+			
+				$(document).on("mouseup", function() {
+					if (isSelecting) {
+						isSelecting = false;
+						sel = window.getSelection();
+						
+						if (sel.anchorNode.parentElement == container.get(0)) {
+							firstElem = sel.anchorNode;
+							while (firstElem.nodeType == Node.TEXT_NODE) {
+								firstElem = firstElem.nextSibling;
+							}
+						} else {
+							firstElem = sel.anchorNode.parentElement;
+						}
+						if (sel.focusNode.parentElement == container.get(0)) {
+							lastElem = sel.focusNode;
+							while (lastElem.nodeType == Node.TEXT_NODE) {
+								lastElem = lastElem.nextSibling;
+							}
+						} else {
+							lastElem = sel.focusNode.parentElement;
+						}
+						
+						var i = container.children().index(firstElem);
+						var j = container.children().index(lastElem);
+
+						var k = j - i;
+						if (k < 0) {
+							k = i - j;
+							i = j;
+							j = k + i;
+						};
+
+						for (l = i; l <= j; l++) {
+							container.children().eq(l).addClass("selected");
+							
+							if (typeof container.children().eq(l).data("targets") != "undefined") {
+								var parId = container.index();
+								var targets = container.children().eq(l).data("targets");
+								
+								for (m = 0; m < targets.base.length; m++) {
+									$(".base-text").eq(parId).children().eq(targets.base[m]).addClass("selected");
+								}
+								for (m = 0; m < targets.target.length; m++) {
+									$(".target-text").eq(parId).children().eq(targets.target[m]).addClass("selected");
+								}
+							}
+						}
+					}
+					
+					$(".text").addClass("select-done");
+				});
+				
+				$(".text span").on("mouseenter", function() {
+					$(".preselected").removeClass("preselected");
+					if (typeof $(this).data("targets") != "undefined") {
+						var parId = $(this).parent(".text").index();
+						var targets = $(this).data("targets");
+						
+						
+						
+						for (m = 0; m < targets.base.length; m++) {
+							$(".base-text").eq(parId).children().eq(targets.base[m]).addClass("preselected");
+						}
+						for (m = 0; m < targets.target.length; m++) {
+							$(".target-text").eq(parId).children().eq(targets.target[m]).addClass("preselected");
+						}
+					}
+				});
+				
+				$(".text").on("mousedown", function(){
+					$(".text").removeClass("select-done");
+					var parId = $(this).index();
+					isSelecting = true;
+					container = $(this);
+					$(".text").children().removeClass("selected");
+				});
+			});
+		</script>
+	</body>
+</html>
